@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+  <a href="/menu">Menu</a> |
+  <a href="/cadastro">Cadastrar Equipe</a> |
+  <a href="/cadastro2">Cadastrar Jogador</a> |
+</nav>
+<hr>
+
+  <h2>Login</h2>
+  <form id="formLogin">
+    <input type="text" name="usuario" placeholder="Usuário" required><br>
+    <input type="password" name="senha" placeholder="Senha" required><br>
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="erro" style="color:red;"></p>
+
+  <script>
+    document.getElementById("formLogin").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const dados = {
+        usuario: form.usuario.value,
+        senha: form.senha.value
+      };
+
+      const resp = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+        credentials: "include"
+      });
+
+      if (resp.ok) {
+        window.location.href = "menu.html";
+      } else {
+        document.getElementById("erro").textContent = "Login inválido!";
+      }
+    });
+  </script>
+</body>
+</html>

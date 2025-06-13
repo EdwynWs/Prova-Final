@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Jogador</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="/menu">Menu</a> |
+    <a href="/cadastro">Cadastrar Equipe</a> |
+    <a href="/login">Sair</a>
+  </nav>
+  <hr>
+
+  <h2>Cadastrar Jogador</h2>
+
+  <form id="form-jogador">
+    <label>Nome: <input type="text" name="nome" required></label><br>
+    <label>Número: <input type="number" name="numero" required></label><br>
+    <label>Data de Nascimento: <input type="date" name="nascimento" required></label><br>
+    <label>Altura (cm): <input type="number" name="altura" required></label><br>
+    <label>Gênero:
+      <select name="genero" required>
+        <option value="">Selecione</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Feminino">Feminino</option>
+        <option value="Outro">Outro</option>
+      </select>
+    </label><br>
+    <label>Posição: <input type="text" name="posicao" required></label><br>
+    <label>Equipe:
+      <select name="equipe" id="select-equipes" required>
+        <option value="">Carregando equipes...</option>
+      </select>
+    </label><br><br>
+
+    <button type="submit">Cadastrar Jogador</button>
+  </form>
+
+  <script>
+    fetch('/api/equipes', { credentials: 'include' })
+      .then(res => res.json())
+      .then(dados => {
+        const select = document.getElementById('select-equipes');
+        select.innerHTML = '<option value="">Selecione uma equipe</option>';
+        dados.forEach(equipe => {
+          const opt = document.createElement('option');
+          opt.value = equipe.nome;
+          opt.textContent = equipe.nome;
+          select.appendChild(opt);
+        });
+      })
+      .catch(() => {
+        document.getElementById('select-equipes').innerHTML =
+          '<option value="">Erro ao carregar equipes</option>';
+      });
+
+    document.getElementById('form-jogador').addEventListener('submit', e => {
+      e.preventDefault();
+      const dados = Object.fromEntries(new FormData(e.target));
+      fetch('/api/jogadores', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+      .then(res => res.json())
+      .then(resp => alert(resp.mensagem || 'Jogador cadastrado!'))
+      .catch(() => alert('Erro ao cadastrar'));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+  <a href="/cadastro">Cadastrar Equipe</a> |
+  <a href="/cadastro2">Cadastrar Jogador</a> |
+  <a href="/login">Sair</a>
+</nav>
+<hr>
+
+  <h2>Menu</h2>
+  <p>Último acesso: <span id="ultimo">Carregando...</span></p>
+
+
+  <script>
+    function obterCookie(nome) {
+      const cookies = document.cookie.split("; ");
+      for (let c of cookies) {
+        const [key, val] = c.split("=");
+        if (key === nome) return decodeURIComponent(val);
+      }
+      return null;
+    }
+
+    const ultimo = obterCookie("ultimoAcesso");
+    document.getElementById("ultimo").textContent = ultimo || "Primeira vez acessando";
+  </script>
+</body>
+</html>
