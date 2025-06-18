@@ -33,6 +33,7 @@
   </form>
 
   <script>
+    // Carrega as equipes no <select>
     async function carregarEquipes() {
       const resp = await fetch("/api/equipes", { credentials: "include" });
       const equipes = await resp.json();
