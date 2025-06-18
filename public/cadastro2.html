@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Cadastro de Jogador</title>
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
     <a href="/menu">Menu</a> |
     <a href="/cadastro">Cadastrar Equipe</a> |
-    <a href="/login">Sair</a>
+    <a href="/api/logout">Sair</a>
   </nav>
   <hr>
 
@@ -56,18 +56,23 @@
           '<option value="">Erro ao carregar equipes</option>';
       });
 
-    document.getElementById('form-jogador').addEventListener('submit', e => {
+    document.getElementById('form-jogador').addEventListener('submit', async e => {
       e.preventDefault();
       const dados = Object.fromEntries(new FormData(e.target));
-      fetch('/api/jogadores', {
+
+      const resp = await fetch('/api/jogadores', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados)
-      })
-      .then(res => res.json())
-      .then(resp => alert(resp.mensagem || 'Jogador cadastrado!'))
-      .catch(() => alert('Erro ao cadastrar'));
+      });
+
+      if (resp.ok) {
+        alert('Jogador cadastrado com sucesso!');
+        window.location.href = '/api/jogadores';
+      } else {
+        alert('Erro ao cadastrar jogador.');
+      }
     });
   </script>
 </body>

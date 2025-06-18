@@ -2,15 +2,9 @@
 <html>
 <head>
   <title>Login</title>
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav>
-  <a href="/menu">Menu</a> |
-  <a href="/cadastro">Cadastrar Equipe</a> |
-  <a href="/cadastro2">Cadastrar Jogador</a> |
-</nav>
-<hr>
 
   <h2>Login</h2>
   <form id="formLogin">
@@ -23,6 +17,8 @@
   <script>
     document.getElementById("formLogin").addEventListener("submit", async function (e) {
       e.preventDefault();
+      document.getElementById("erro").textContent = ''; // limpa erro anterior
+
       const form = e.target;
       const dados = {
         usuario: form.usuario.value,
@@ -37,7 +33,7 @@
       });
 
       if (resp.ok) {
-        window.location.href = "menu.html";
+        window.location.href = "/menu";
       } else {
         document.getElementById("erro").textContent = "Login inválido!";
       }

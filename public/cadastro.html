@@ -2,21 +2,21 @@
 <html>
 <head>
   <title>Cadastro de Equipe</title>
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
-  <a href="/menu">Menu</a> |
-  <a href="/cadastro2">Cadastrar Jogador</a> |
-  <a href="/login">Sair</a>
-</nav>
-<hr>
+    <a href="/menu">Menu</a> |
+    <a href="/cadastro2">Cadastrar Jogador</a> |
+    <a href="/api/logout">Sair</a>
+  </nav>
+  <hr>
 
   <h2>Cadastro de Equipe</h2>
   <form id="formEquipe">
-    <input name="nomeEquipe" placeholder="Nome da Equipe" required><br>
-    <input name="nomeTecnico" placeholder="Nome do Técnico" required><br>
-    <input name="telefoneTecnico" placeholder="Telefone do Técnico" required><br>
+    <input name="nome" placeholder="Nome da Equipe" required><br>
+    <input name="tecnico" placeholder="Nome do Técnico" required><br>
+    <input name="telefone" placeholder="Telefone do Técnico" required><br>
     <button type="submit">Cadastrar</button>
   </form>
 
@@ -25,9 +25,9 @@
       e.preventDefault();
       const form = e.target;
       const dados = {
-        nomeEquipe: form.nomeEquipe.value,
-        nomeTecnico: form.nomeTecnico.value,
-        telefoneTecnico: form.telefoneTecnico.value
+        nome: form.nome.value,
+        tecnico: form.tecnico.value,
+        telefone: form.telefone.value
       };
 
       const resp = await fetch("/api/equipes", {
@@ -40,6 +40,7 @@
       if (resp.ok) {
         alert("Equipe cadastrada!");
         form.reset();
+        window.location.href = "/api/equipes"; // Já manda pra listagem
       } else {
         alert("Erro ao cadastrar equipe.");
       }
