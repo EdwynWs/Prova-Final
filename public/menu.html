@@ -3,32 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>Menu</title>
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
-  <a href="/cadastro">Cadastrar Equipe</a> |
-  <a href="/cadastro2">Cadastrar Jogador</a> |
-  <a href="/login">Sair</a>
-</nav>
-<hr>
+    <a href="/cadastro">Cadastrar Equipe</a> |
+    <a href="/cadastro2">Cadastrar Jogador</a> |
+    <a href="/logout">Sair</a>
+  </nav>
+  <hr>
 
   <h2>Menu</h2>
-  <p>Último acesso: <span id="ultimo">Carregando...</span></p>
-
+  <p id="infoUsuario">Carregando...</p>
 
   <script>
-    function obterCookie(nome) {
-      const cookies = document.cookie.split("; ");
-      for (let c of cookies) {
-        const [key, val] = c.split("=");
-        if (key === nome) return decodeURIComponent(val);
+    async function carregarInfo() {
+      try {
+        const resp = await fetch("/api/usuario", { credentials: "include" });
+        if (resp.ok) {
+          const dados = await resp.json();
+          document.getElementById("infoUsuario").textContent = 
+            `Usuário: ${dados.usuario} | Último acesso: ${dados.ultimoAcesso}`;
+        } else {
+          document.getElementById("infoUsuario").textContent = "Erro ao obter dados do usuário.";
+        }
+      } catch (e) {
+        document.getElementById("infoUsuario").textContent = "Erro ao conectar com o servidor.";
       }
-      return null;
     }
 
-    const ultimo = obterCookie("ultimoAcesso");
-    document.getElementById("ultimo").textContent = ultimo || "Primeira vez acessando";
+    carregarInfo();
   </script>
 </body>
 </html>
